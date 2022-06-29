@@ -9,7 +9,7 @@ Two files - main script and source code. The source code needs to be loaded in f
 
 Data:
 
-(Almost) All data are saved in a single rds file: IUCN_Data.rds, which is part of this repository. This is a list with six elements (more info is provided in the scripts):
+All data are saved in a single rds file: IUCN_Data.rds, which is part of this repository. This is a list with six elements (more info is provided in the scripts):
 
 1) The extinct species data (data frame)
 
