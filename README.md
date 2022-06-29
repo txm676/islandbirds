@@ -11,9 +11,9 @@ Data:
 
 All data are saved in a single rds file: IUCN_Data.rds, which is part of this repository. This is a list with six elements (more info is provided in the scripts):
 
-1) The extinct species data (data frame)
+1) The extinct species data - species names, IUCN status, traits etc (data frame)
 
-2) extant species data (dataframe)
+2) extant species data - species names, IUCN status, traits etc (data frame)
 
 3) species IUCN threat data (list)
 
