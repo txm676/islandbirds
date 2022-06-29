@@ -7,6 +7,9 @@ Matthews et al (2022) Threatened and extinct island endemic birds: distribution,
 Code:
 Two files - main script and source code. The source code needs to be loaded in first (top line of the main script)
 
+Authors: Tom Matthews and Joe Wayman (Figure 7 code)
+
+
 Data:
 
 All data are saved in a single rds file: IUCN_Data.rds, which is part of this repository. This is a list with six elements (more info is provided in the scripts):
@@ -24,3 +27,5 @@ All data are saved in a single rds file: IUCN_Data.rds, which is part of this re
 6) null model values for the beak morphospace analysis (using the island species pool) (list)
 
 7) Hypervolume beta-div and null model results (list)
+
+
