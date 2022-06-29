@@ -52,7 +52,8 @@ beak_run_all <- IUCN_Data[[5]]
 beak_run_all <- IUCN_Data[[6]]
 
 #Hypervolume beta-div and null model results
-#A list with five elements: i) the null model values, ii) unused volume calcs (ignore),
+#A list with five elements: i) the null model values (all species pool),
+#ii) the null model values (island endemic species pool),
 #iii) the raw hypervolumes, iv) beta diversity values, v) unique fractions
 h_list <- IUCN_Data[[7]]
   

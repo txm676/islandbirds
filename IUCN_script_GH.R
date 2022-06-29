@@ -793,9 +793,11 @@ uni_34 #unique fractions
 
 
 #results of this already loaded in (h_list) through source code
-#h_list: A list with five elements: i) the null model values, ii) unused volume calcs (ignore),
+#h_list: A list with five elements: i) the null model values (all sp. pool), 
+#ii) he null model values (island endemic sp. pool),
 #iii) the raw hypervolumes, iv) beta diversity values, v) unique fractions
 h <- h_list[[1]]; bb_134 <- h_list[[4]]; uni_34 <- h_list[[5]]
+#to get island endemic pool results: h <- h_list[[2]]
 
 hh <-  as.data.frame(h) %>%
   select(jaccard34,  Uniq_Frac_34_3, Uniq_Frac_34_4)
