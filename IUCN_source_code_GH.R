@@ -3,7 +3,7 @@
 ################################################################################
 
 #devtools::install_github("ianmoran11/mmtable2")
-
+library(tidyr)
 library(dplyr)
 library(stringr)
 library(ggplot2)
@@ -13,6 +13,14 @@ library(corrplot)
 library(sf)
 library("rnaturalearth")
 library("rnaturalearthdata")
+library(grid)
+library(gridExtra)
+library(ggstance)
+library(ggpubr)
+library(patchwork)
+library(RColorBrewer)
+library(BAT)
+library(VGAM)
 
 library(foreach)
 library(doParallel)

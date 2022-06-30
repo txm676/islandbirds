@@ -953,3 +953,418 @@ wilcox.test(Mass ~ as.character(Threatened), data = IE, alternative = "two.sided
 #HWI
 wilcox.test(HWI ~ as.character(Threatened), data = IE, alternative = "two.sided")
 
+
+###########################################################
+#######FIGURE 7############################
+########################################################
+
+##Code by Joe Wayman
+
+##NB for this code to work, the code in the previous two sections needs to have
+#been run first 
+
+df <- IE
+
+cbbPalette2 <- c(
+  "#009E73", "Grey",
+  "#A6D854", # Forest
+  "#FFD92F", # Grassland
+  "#66C2A5", # Marine
+  "#8DA0CB", # Wetland
+  "#66C2A5", # Aquatic Predator
+  "#FC8D62", # Frugivore
+  "#FFD92F", # Granivore
+  "#E5C494", # Invertivore
+  "#E78AC3", # Nectarivore
+  "Grey", # Omnivore
+  "Black") # Vertivore)
+
+#FILLED - Black outer lines and coloured dotted mean lines
+{
+  
+  #Set the alpha
+  a <- 0.7
+  
+  #Trophic Niche
+  #Filter out 7 most species rich niches
+  IE_filt <- filter(df, Trophic.Niche %in% c("Aquatic predator", "Frugivore",
+                                             "Granivore", "Invertivore",
+                                             "Nectarivore", "Omnivore","Vertivore"))
+  #Habitat
+  #remove rock and human modified
+  IE_filt2 <- filter(df, Habitat %in% c("Forest", "Grassland", "Marine", "Wetland"))
+  
+  ## Density plots
+  df_1 <- filter(df, Threatened == 1)
+  df_0 <- filter(df, Threatened == 0)
+  
+  # Body mass
+  
+  mu <- data.frame(mean = numeric(0), Threatened = character(0))
+  mu[1,1] <- mean(log(df_0$Mass))
+  print(mu[1,1])
+  mu[1,2] <- 0
+  mu[2,1] <- mean(log(df_1$Mass))
+  mu[2,2] <- 1
+  print(mu[2,1])
+  
+  mass <- ggplot() + 
+    geom_density(data = df, aes(x = log(Mass), group = factor(Threatened), fill = as.factor(Threatened) ), alpha = a) +
+    geom_density(data = df, aes(x = log(Mass), group = factor(Threatened)), size = 1) +
+    geom_vline(data = mu, 
+               aes(xintercept = mean),
+               colour = c(cbbPalette2[1], cbbPalette2[2]),
+               linetype="dashed",
+               size = 2) + 
+    labs(x = "logMass", 
+         y = "Density",
+         colour = "Threatened status") + 
+    scale_fill_manual(values = c(cbbPalette2[1], cbbPalette2[2]), labels = c("Non-Threatened", "Threatened")) +
+    #scale_colour_manual( values = c(cbbPalette2[1], cbbPalette2[2]), labels = c("Non-Threatened", "Threatened") ) +
+    theme_classic() +
+    theme(axis.title.x = element_text(size = 20), 
+          plot.title = element_text(size = 20, hjust = 0.5),
+          axis.text = element_text(size = 20),
+          axis.text.x = element_text(size = 20, angle = 0, hjust = 1),
+          axis.text.y = element_text(size = 20),
+          axis.title.y = element_text(size = 20),
+          legend.text = element_text(size = 20),
+          legend.title = element_text(size = 20),
+          plot.margin = margin(10,0,10,0))   # top, right, bottom, left 
+  # HWI
+  mu <- data.frame(mean = numeric(0), Threatened = character(0))
+  mu[1,1] <- mean((df_0$HWI))
+  print(mu[1,1])
+  mu[1,2] <- 0
+  mu[2,1] <- mean((df_1$HWI))
+  print(mu[2,1])
+  mu[2,2] <- 1
+  
+  hwi <- ggplot() + 
+    geom_density(data = df, aes(x = HWI, group = factor(Threatened), fill = as.factor(Threatened) ), alpha = a) +
+    geom_density(data = df, aes(x = HWI, group = factor(Threatened)), size = 1) +
+    geom_vline(data = mu, 
+               aes(xintercept = mean),
+               colour = c(cbbPalette2[1], cbbPalette2[2]),
+               linetype="dashed",
+               size = 2) + 
+    labs(x = "HWI", 
+         y = "Density",
+         fill = "Threatened status") + 
+    scale_fill_manual(values = c(cbbPalette2[1], cbbPalette2[2]), labels = c("Non-Threatened", "Threatened")) +
+    #scale_colour_manual( values = c(cbbPalette2[1], cbbPalette2[2]), labels = c("Non-Threatened", "Threatened") ) +
+    theme_classic() +
+    theme(axis.title.x = element_text(size = 20), 
+          plot.title = element_text(size = 20, hjust = 0.5),
+          axis.text = element_text(size = 20),
+          axis.text.x = element_text(size = 20, angle = 0, hjust = 1),
+          axis.text.y = element_text(size = 20),
+          axis.title.y = element_text(size = 20),
+          legend.text = element_text(size = 20),
+          legend.title = element_text(size = 20),
+          plot.margin = margin(10,0,10,0))   # top, right, bottom, left 
+  
+  # PC1
+  mu <- data.frame(mean = numeric(0), Threatened = character(0))
+  mu[1,1] <- mean(df_0$PC1)
+  print(mu[1,1])
+  mu[1,2] <- 0
+  mu[2,1] <- mean(df_1$PC1)
+  print(mu[2,1])
+  mu[2,2] <- 1
+  
+  pc1 <- ggplot() + 
+    geom_density(data = df, aes(x = PC1, group = factor(Threatened), fill = as.factor(Threatened) ), alpha = a) +
+    geom_density(data = df, aes(x = PC1, group = factor(Threatened)), size = 1) +
+    geom_vline(data = mu, 
+               aes(xintercept = mean),
+               colour = c(cbbPalette2[1], cbbPalette2[2]),
+               linetype="dashed",
+               size = 2) + 
+    labs(x = "PC1", 
+         y = "Density",
+         colour = "Threatened status") + 
+    scale_fill_manual(values = c(cbbPalette2[1], cbbPalette2[2]), labels = c("Non-Threatened", "Threatened")) +
+    theme_classic() +
+    theme(axis.title.x = element_text(size = 20), 
+          plot.title = element_text(size = 20, hjust = 0.5),
+          axis.text = element_text(size = 20),
+          axis.text.x = element_text(size = 20, angle = 0, hjust = 1),
+          axis.text.y = element_text(size = 20),
+          axis.title.y = element_text(size = 20),
+          legend.text = element_text(size = 20),
+          legend.title = element_text(size = 20),
+          plot.margin = margin(10,0,10,0))   # top, right, bottom, left 
+  # PC2
+  mu <- data.frame(mean = numeric(0), Threatened = character(0))
+  mu[1,1] <- mean(df_0$PC2)
+  print(mu[1,1])
+  mu[1,2] <- 0
+  mu[2,1] <- mean(df_1$PC2)
+  print(mu[2,1])
+  mu[2,2] <- 1
+  
+  pc2 <- ggplot() + 
+    geom_density(data = df, aes(x = PC2, group = factor(Threatened), fill = as.factor(Threatened) ), alpha = a) +
+    geom_density(data = df, aes(x = PC2, group = factor(Threatened)), size = 1) +
+    geom_vline(data = mu, 
+               aes(xintercept = mean),
+               colour = c(cbbPalette2[1], cbbPalette2[2]),
+               linetype="dashed",
+               size = 2) + 
+    labs(x = "PC2", 
+         y = "Density",
+         colour = "Threatened status") + 
+    scale_fill_manual(values = c(cbbPalette2[1], cbbPalette2[2]), labels = c("Non-Threatened", "Threatened")) +
+    theme_classic() +
+    theme(axis.title.x = element_text(size = 20), 
+          plot.title = element_text(size = 20, hjust = 0.5),
+          axis.text = element_text(size = 20),
+          axis.text.x = element_text(size = 20, angle = 0, hjust = 1),
+          axis.text.y = element_text(size = 20),
+          axis.title.y = element_text(size = 20),
+          legend.text = element_text(size = 20),
+          legend.title = element_text(size = 20),
+          plot.margin = margin(10,0,10,0))   # top, right, bottom, left 
+  # Habitat box plot
+  IE_hab1 <- filter(IE_filt2, Threatened == 1)
+  IE_hab0 <- filter(IE_filt2, Threatened == 0)
+  
+  #Calculate percentages within each one
+  dfhab0 <- data.frame(Threatened = character(0),
+                       habitat = character(0),
+                       perc = numeric(0))
+  
+  #fill in the dataset for the non-threatened
+  for(i in 1:length(unique(IE_hab0$Habitat))){
+    
+    dfhab0[i,1] <- 0
+    dfhab0[i,2] <- unique(IE_hab0$Habitat)[i]
+    dfhab0[i,3] <- nrow(filter(IE_hab0, Habitat == unique(IE_hab0$Habitat)[i]))/nrow(IE_hab0)*100
+    
+  }
+  #Calculate percentages within each one
+  dfhab1 <- data.frame(Threatened = character(0),
+                       habitat = character(0),
+                       perc = numeric(0))
+  
+  #fill in the dataset for the non-threatened
+  for(i in 1:length(unique(IE_hab1$Habitat))){
+    
+    dfhab1[i,1] <- 1
+    dfhab1[i,2] <- unique(IE_hab1$Habitat)[i]
+    dfhab1[i,3] <- nrow(filter(IE_hab1, Habitat == unique(IE_hab1$Habitat)[i]))/nrow(IE_hab1)*100
+  }
+  
+  dfhab <- rbind(dfhab0, dfhab1)
+  dfhab_long <- dfhab
+  
+  hab <- ggplot() +
+    geom_bar(data = dfhab_long, 
+             aes(x = as.factor(Threatened), y = perc, colour = Threatened), 
+             stat = "identity",
+             size = 4) +
+    geom_bar(data = dfhab, 
+             aes(x = factor(Threatened), y = perc,  fill = habitat), 
+             position = "stack", 
+             stat = "identity") +
+    labs(x = "", 
+         y = "Percentage",
+         fill = "Habitat") + 
+    scale_colour_manual(values = c(cbbPalette2[1], cbbPalette2[2]), labels = c("Non-Threatened", "Threatened")) +
+    scale_fill_manual(values = c(cbbPalette2[3], cbbPalette2[4], cbbPalette2[5], cbbPalette2[6]), 
+                      labels = c("Forest         ", "Grassland         ", "Marine         ", "Wetland         ")) + 
+    theme_classic() +
+    theme(axis.title.x = element_text(size = 20), 
+          plot.title = element_text(size = 20, hjust = 0.5),
+          axis.text = element_text(size = 20),
+          axis.text.x = element_text(size = 0, angle = 0),
+          axis.ticks.x = element_line(size = 0), 
+          axis.text.y = element_text(size = 20),
+          axis.title.y = element_text(size = 20),
+          legend.text = element_text(size = 20),
+          legend.title = element_text(size = 20),
+          plot.margin = margin(10,0,10,0))   # top, right, bottom, left 
+  # Tropich niche
+  IE_nic1 <- filter(IE_filt, Threatened == 1)
+  IE_nic0 <- filter(IE_filt, Threatened == 0)
+  
+  #Calculate percentages within each one
+  dfnic0 <- data.frame(Threatened = character(0),
+                       niche = character(0),
+                       perc = numeric(0))
+  
+  #fill in the dataset for the non-threatened
+  for(i in 1:length(unique(IE_nic0$Trophic.Niche))){
+    
+    dfnic0[i,1] <- 0
+    dfnic0[i,2] <- unique(IE_nic0$Trophic.Niche)[i]
+    dfnic0[i,3] <- nrow(filter(IE_nic0, Trophic.Niche == unique(IE_nic0$Trophic.Niche)[i]))/nrow(IE_nic0)*100
+    
+  }
+  
+  #Calculate percentages within each one
+  dfnic1 <- data.frame(Threatened = character(0),
+                       niche = character(0),
+                       perc = numeric(0))
+  
+  #fill in the dataset for the non-threatened
+  for(i in 1:length(unique(IE_nic1$Trophic.Niche))){
+    
+    dfnic1[i,1] <- 1
+    dfnic1[i,2] <- unique(IE_nic1$Trophic.Niche)[i]
+    dfnic1[i,3] <- nrow(filter(IE_nic1, Trophic.Niche == unique(IE_nic1$Trophic.Niche)[i]))/nrow(IE_nic1)*100
+    
+  }
+  
+  dfnic <- rbind(dfnic0, dfnic1)
+  dfnic_long <- dfnic
+  
+  nic <- ggplot() +
+    geom_bar(data = dfnic_long, 
+             aes(x = as.factor(Threatened), y = perc, colour = Threatened), 
+             stat = "identity",
+             size = 4) +
+    geom_bar(data = dfnic, 
+             aes(x = factor(Threatened), y = perc,  fill = niche), 
+             position = "stack", 
+             stat = "identity") +
+    labs(x = "", 
+         y = "Percentage",
+         fill = "Trophic Niche") + 
+    scale_colour_manual(values = c(cbbPalette2[1], cbbPalette2[2]), labels = c("Non-Threatened", "Threatened")) +
+    scale_fill_manual(values = c(cbbPalette2[7], cbbPalette2[8], cbbPalette2[9], cbbPalette2[10], cbbPalette2[11], 
+                                 cbbPalette2[12], cbbPalette2[13]), 
+                      labels = c("Aquatic predator", "Frugivore",
+                                 "Granivore", "Invertivore",
+                                 "Nectarivore", "Omnivore","Vertivore")) + 
+    theme_classic() +
+    theme(axis.title.x = element_text(size = 20), 
+          plot.title = element_text(size = 20, hjust = 0.5),
+          axis.text = element_text(size = 20),
+          axis.text.x = element_text(size = 0, angle = 0),
+          axis.ticks.x = element_line(size = 0), 
+          axis.text.y = element_text(size = 20),
+          axis.title.y = element_text(size = 20),
+          legend.text = element_text(size = 20),
+          legend.title = element_text(size = 20),
+          plot.margin = margin(10,0,10,0))   # top, right, bottom, left 
+  
+  get_legend<-function(myggplot){
+    tmp <- ggplot_gtable(ggplot_build(myggplot))
+    leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
+    legend <- tmp$grobs[[leg]]
+    return(legend)
+  }
+  
+  #Adjust the legend position for threatened and then remove from all plots along with Y axis title
+  {  hwi2 <- ggplot() + 
+      geom_density(data = df, aes(x = HWI, group = factor(Threatened), colour = as.factor(Threatened )), size = 2) +
+      geom_vline(data = mu, 
+                 aes(xintercept = mean),
+                 colour = c(cbbPalette2[1], cbbPalette2[2]),
+                 linetype="dashed",
+                 size = 2) + 
+      geom_vline(data = mu, 
+                 aes(xintercept = mean),
+                 colour = c("black"),
+                 linetype="dashed",
+                 size = 1) + 
+      labs(x = "HWI", 
+           y = "Density",
+           fill = "Threatened status",
+           colour = "Threatened status") + 
+      scale_fill_manual(values = c(cbbPalette2[1], cbbPalette2[2]), labels = c("Non-Threatened", "Threatened")) +
+      scale_colour_manual( values = c(cbbPalette2[1], cbbPalette2[2]), labels = c("Non-Threatened", "Threatened") ) +
+      theme_classic() +
+      theme(axis.title.x = element_text(size = 20), 
+            plot.title = element_text(size = 20, hjust = 0.5),
+            axis.text = element_text(size = 20),
+            axis.text.x = element_text(size = 20, angle = 0, hjust = 1),
+            axis.text.y = element_text(size = 20),
+            axis.title.y = element_text(size = 20),
+            legend.text = element_text(size = 20),
+            legend.title = element_text(size = 20),
+            plot.margin = margin(10,0,10,0))   # top, right, bottom, left 
+  }
+  
+  hwi2$theme$legend.position <- "bottom"
+  
+  g <- get_legend(hwi2)
+  
+  hwi$theme$legend.position <- ""
+  hwi$labels$y <- ""
+  mass$theme$legend.position <- ""
+  mass$labels$y <- ""
+  pc1$theme$legend.position <- ""
+  pc1$labels$y <- ""
+  pc2$theme$legend.position <- ""
+  pc2$labels$y <- ""
+  
+  #Combine the continuous plots with a shared Y-axes
+  t <- ggarrange(hwi, mass,
+                 pc1, pc2, 
+                 ncol = 2,
+                 nrow = 2,
+                 widths = c(1, 1),
+                 common.legend = F)
+  t <- annotate_figure(t, left = textGrob("Density", rot = 90, vjust = 1, hjust = 0.5, gp = gpar(cex = 2)))
+  
+  #Remove the Y axis labels and combine the categorical plots and legends with a shared Y-axes
+  hab$labels$y <- ""
+  nic$labels$y <- ""
+  
+  #Remove the threatened legend
+  hab <- hab + guides(colour = "none")
+  nic <- nic + guides(colour = "none")
+  
+  #Get the main legend
+  g1 <- get_legend(hab)
+  g2 <- get_legend(nic)
+  
+  #Remove the main legend
+  hab$theme$legend.position <- ""
+  nic$theme$legend.position <- ""
+  
+  t2 <- ggarrange(hab, g1,
+                  nic, g2, 
+                  ncol = 2,
+                  nrow = 2,
+                  widths = c(1, 0.4),
+                  common.legend = F)
+  
+  t2 <- annotate_figure(t2, left = textGrob("Percentage", rot = 90, vjust = 1.5, hjust = 0.5, gp = gpar(cex = 2)))
+  
+  #Put them all together
+  f <- ggarrange(
+    ggarrange(
+      t, 
+      t2,
+      ncol = 2
+    ),
+    g,
+    nrow = 2,
+    heights = c(2,0.2) 
+  )
+}
+
+f
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
