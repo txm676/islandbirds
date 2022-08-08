@@ -12,7 +12,7 @@ Authors: Tom Matthews and Joe Wayman (Figure 7 code)
 
 Data:
 
-All data are saved in a single rds file: IUCN_Data.rds, which is part of this repository. This is a list with six elements (more info is provided in the scripts):
+All data are saved in a single rds file: IUCN_Data.rds, which is part of this repository. This is a list with 7 elements (more info is provided in the scripts):
 
 1) The extinct species data - species names, IUCN status, traits etc (data frame)
 

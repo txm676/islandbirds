@@ -831,8 +831,4 @@ extract_list <- function(li, on){
     alpha_beak_dum <- BAT::kernel.alpha(BAT_beak) %>% as.vector()
     return(alpha_beak_dum)
   }
-  
-  
-  
-  
-  
+

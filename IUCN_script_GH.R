@@ -31,7 +31,7 @@ g2 <- ggplot(ttd) + geom_col(aes(Status, Prop, fill = Type), position = "dodge")
   theme(legend.position = "none") + ggtitle("b)")
 
 
-gridExtra::grid.arrange(g1, g2, nrow = 1)
+gridExtra::grid.arrange(g1, g2, nrow = 2)
 
 ################################################################
 ##########Null Model: Figure S2############################################
@@ -567,12 +567,31 @@ arch_M <- match(arch_N$GeographicalOrigin, thrt_map3$GeographicalOrigin)
 arch_N$LAT <- thrt_map3$LAT[arch_M]
 arch_N$LON <- thrt_map3$LON[arch_M]
 
+##transform the background map to Molleweide projection
+target_crs <- '+proj=moll'
+worldmap_trans <- st_transform(world, crs = target_crs)
+
+##Code to convert data points into Molleweide transformation
+#change arch_N to an sf object
+thrt_point <- st_as_sf(arch_N, coords = c("LON", "LAT"), 
+                       crs = "WGS84")
+#convert this to have Molleweide projection
+thrt_point_trans <- st_transform(thrt_point, crs = target_crs)
+#work around to convert these converted XY points to a df
+thrt_geom <- as.vector(unlist(thrt_point_trans$geometry))
+thrt_xx <- matrix(thrt_geom, ncol = 2, byrow = TRUE) %>%
+  as.data.frame()
+colnames(thrt_xx) <- c("X", "Y")
+#add the N values back into this df
+thrt_xx$N <- arch_N$N
+
 breaks <- c(1, 10, 30, 60)
 labs <- c("1", "10", "30", "60")
 
-g8a <- ggplot(data = world) +
-  geom_sf(color = "black", fill = "lightgreen") +
-  geom_point(data = arch_N, aes(x = LON, y = LAT, size = N),  
+g8a <- ggplot() + geom_sf(data = worldmap_trans,
+                          color = "black", fill = "lightgreen") +
+  theme_classic() +
+  geom_point(data = thrt_xx, aes(x = X, y = Y, size = N),
              shape = 21, fill = "royalblue3", alpha = 0.7) +
   labs(size="No. of species") +
   theme(legend.position = "top") + xlab("") + ylab("") + 
@@ -595,11 +614,24 @@ ext_new_isl_grp <- ext_new_isl %>%
             LAT = unique(LAT),
             LON = unique(LON))
 
+##Code to convert data points into Molleweide transformation
+ext_point <- st_as_sf(ext_new_isl_grp, coords = c("LON", "LAT"), 
+                      crs = "WGS84")
+ext_point_trans <- st_transform(ext_point, crs = target_crs)
+ext_geom <- as.vector(unlist(ext_point_trans$geometry))
+ext_xx <- matrix(ext_geom, ncol = 2, byrow = TRUE) %>%
+  as.data.frame()
+colnames(ext_xx) <- c("X", "Y")
+ext_xx$N <- ext_new_isl_grp$N
+
 breaks <- c(1, 10, 20, 30)
 labs <- c("1", "10", "20", "30")
-g8b <- ggplot(data = world) +
-  geom_sf(color = "black", fill = "lightgreen") +
-  geom_point(data = ext_new_isl_grp, aes(x = LON, y = LAT, size = N),  
+
+g8b <- ggplot() +
+  geom_sf(data = worldmap_trans,
+          color = "black", fill = "lightgreen") +
+  geom_point(data = ext_xx, 
+             aes(x = X, y = Y, size = N),  
              shape = 21, fill = "orangered1", alpha = 0.7) +
   labs(size="No. of species") +
   theme(legend.position = "top") + xlab("") + ylab("") + ggtitle("b)") +
@@ -794,7 +826,7 @@ uni_34 #unique fractions
 
 #results of this already loaded in (h_list) through source code
 #h_list: A list with five elements: i) the null model values (all sp. pool), 
-#ii) he null model values (island endemic sp. pool),
+#ii) the null model values (island endemic sp. pool),
 #iii) the raw hypervolumes, iv) beta diversity values, v) unique fractions
 h <- h_list[[1]]; bb_134 <- h_list[[4]]; uni_34 <- h_list[[5]]
 #to get island endemic pool results: h <- h_list[[2]]
@@ -1349,22 +1381,3 @@ cbbPalette2 <- c(
 }
 
 f
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
