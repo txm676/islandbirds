@@ -21,7 +21,7 @@ All data are saved in a single rds file: IUCN_Data.rds, which is part of this re
 
 2) extant species data - species names, IUCN status, traits etc (data frame)
 
-3) species IUCN threat data (list)
+3) species threat data (list)
 
 4) threatened and extinct species geographic data (data frame)
 
