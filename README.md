@@ -32,3 +32,6 @@ All data are saved in a single rds file: IUCN_Data.rds, which is part of this re
 7) Hypervolume beta-div and null model results (list)
 
 
+Note that the IUCN has restrictions on the use and publication of the Red List data, see: https://www.iucnredlist.org/terms/terms-of-use
+
+
