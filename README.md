@@ -5,7 +5,7 @@
 
 Code and data for the paper:
 
-Matthews et al (2022) Threatened and extinct island endemic birds: distribution, threats and functional diversity. Journal of Biogeography, in press
+Matthews et al (2022) Threatened and extinct island endemic birds of the world: distribution, threats and functional diversity. Journal of Biogeography, in press
 
 Code:
 Two files - main script and source code. The source code needs to be loaded in first (top line of the main script)
