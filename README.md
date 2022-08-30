@@ -1,3 +1,6 @@
+
+[![DOI](https://zenodo.org/badge/7034283.svg)](https://zenodo.org/badge/DOI/10.5281/zenodo.7034283.svg)
+
 # islandbirds
 
 Code and data for the paper:
